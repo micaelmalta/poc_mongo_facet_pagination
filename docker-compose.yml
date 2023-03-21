@@ -1,0 +1,21 @@
+version: '3.9'
+
+x-networks: &networks
+  networks:
+    - ns
+
+services:
+  mongo:
+    <<: *networks
+    image: mongo:6.0
+
+  app:
+    <<: *networks
+    build: .
+    depends_on:
+      - mongo
+    command: pytest -s /app/test.py
+
+networks:
+  ns:
+    driver: bridge
